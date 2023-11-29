@@ -57,7 +57,11 @@ bootstrap_results =
     models = map(strap_sample, ~lm(tmax ~ tmin + prcp, data = .)
   ), 
     results = map(models, broom::tidy),
-    r_squared = map_dbl(models, ~broom::glance(.x)$r.squared)
+    r_squared = map_dbl(models, ~broom::glance(.x)$r.squared),
+    beta_product = map_dbl(models, ~ {
+      coef <- coefficients(.x)
+      if (coef[2] * coef[3] >= 0) log(coef[2] * coef[3]) else NA_real_
+    })
   ) %>% 
   select(-strap_sample, -models) %>% 
   unnest(results)
