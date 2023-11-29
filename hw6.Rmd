@@ -94,7 +94,6 @@ The distribution of the log(beta_1*beta_2) estimates is strongly left skewed. Th
 
 ```{r}
 bootstrap_results %>%  
-  group_by(term) %>% 
   summarize(
     ci_lower = quantile(r_squared, 0.025), 
     ci_upper = quantile(r_squared, 0.975))
@@ -104,7 +103,6 @@ We are 95% confident that the true r-squared value is between 0.889 and 0.941.
 
 ```{r}
 bootstrap_results %>%  
-  group_by(term) %>% 
   summarize(
     ci_lower = quantile(log_beta, 0.025, na.rm = TRUE), 
     ci_upper = quantile(log_beta, 0.975, na.rm = TRUE))
@@ -114,16 +112,62 @@ We are 95% confident that the true log(beta_1*beta_2) value is between -8.98 and
 
 # Problem 3 
 
-## tidying the data
+## Tidying the data
 ```{r}
 birthweight_df = 
   read_csv("data/birthweight.csv") %>% 
   janitor::clean_names() %>% 
-  mutate(across(c(babysex, frace, malform, mrace), as_factor))
+  mutate(across(c(babysex, frace, malform, mrace), as_factor)) %>% 
+  select(-pnumsga, -pnumlbw)
 
 missing_val_check = 
   birthweight_df %>% 
   summarise_all(~sum(is.na(.)))
 ```
+
+## Regression model
+```{r}
+fit = 
+  lm(bwt ~ babysex + bhead + blength + delwt + fincome + frace + gaweeks + malform + menarche + mheight + momage + mrace + parity + ppbmi + ppwt + smoken + wtgain, data = birthweight_df)
+
+summary(fit)
+
+fit_2 = 
+  lm(bwt ~ babysex + bhead + blength + delwt + fincome + frace + gaweeks + menarche + mheight + momage + mrace + parity + ppbmi + ppwt + smoken + wtgain, data = birthweight_df)
+
+summary(fit_2)
+
+fit_3 = 
+  lm(bwt ~ babysex + bhead + blength + delwt + fincome + gaweeks + menarche + mheight + momage + mrace + parity + ppbmi + ppwt + smoken + wtgain, data = birthweight_df)
+
+summary(fit_3)
+
+fit_4 = 
+  lm(bwt ~ babysex + bhead + blength + delwt + fincome + gaweeks + menarche + mheight + momage + mrace + parity + ppwt + smoken + wtgain, data = birthweight_df)
+
+summary(fit_4)
+
+fit_5 = 
+  lm(bwt ~ babysex + bhead + blength + delwt + fincome + gaweeks + menarche + mheight + mrace + parity + ppwt + smoken + wtgain, data = birthweight_df)
+
+summary(fit_5)
+
+fit_6 = 
+  lm(bwt ~ babysex + bhead + blength + delwt + fincome + gaweeks + mheight + mrace + parity + ppwt + smoken + wtgain, data = birthweight_df)
+
+summary(fit_6)
+
+fit_7 = 
+  lm(bwt ~ babysex + bhead + blength + delwt + gaweeks + mheight + mrace + parity + ppwt + smoken + wtgain, data = birthweight_df)
+
+summary(fit_7)
+
+fit_7 %>%  
+  broom::glance()
+```
+
+rmse values 
+start with full model 
+no need to look for interaction
 
 Propose a regression model for birthweight. This model may be based on a hypothesized structure for the factors that underly birthweight, on a data-driven model-building process, or a combination of the two. Describe your modeling process and show a plot of model residuals against fitted values – use add_predictions and add_residuals in making this plot.
