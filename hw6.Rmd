@@ -39,7 +39,7 @@ boot_sample = function(df) {
 }
 
 boot_straps = 
-  tibble(strap_number = 1:500) %>% 
+  tibble(strap_number = 1:5000) %>% 
   mutate(
     strap_sample = map(strap_number, ~boot_sample(df = weather_df))
   )
@@ -58,7 +58,7 @@ bootstrap_results =
   ), 
     results = map(models, broom::tidy),
     r_squared = map_dbl(models, ~broom::glance(.x)$r.squared),
-    beta_product = map_dbl(models, ~ {
+    log_beta = map_dbl(models, ~ {
       coef <- coefficients(.x)
       if (coef[2] * coef[3] >= 0) log(coef[2] * coef[3]) else NA_real_
     })
@@ -68,19 +68,29 @@ bootstrap_results =
 
 ```
 
-r̂ 2
-log(β̂ 1∗β̂ 2)
+## Plotting the distributions of estimates for r_squared and log_beta
+
+```{r}
+estimate_plot_rs = 
+bootstrap_results %>% 
+  ggplot(aes(x = r_squared)) + geom_density()
+
+estimate_plot_rs
+```
+
+```{r}
+estimate_plot_log = 
+bootstrap_results %>% 
+  ggplot(aes(x = log_beta)) + geom_density()
+
+estimate_plot_log
+```
 
 Use 5000 bootstrap samples and, for each bootstrap sample, produce estimates of these two quantities. Plot the distribution of your estimates, and describe these in words.
 
 
-
 Using the 5000 bootstrap estimates, identify the 2.5% and 97.5% quantiles to provide a 95% confidence interval for r̂ 2
  and log(β̂ 0∗β̂ 1)
- 
-. Note: broom::glance() is helpful for extracting r̂ 2
- from a fitted regression, and broom::tidy() (with some additional wrangling) should help in computing log(β̂ 1∗β̂ 2)
-.
 
 
 
