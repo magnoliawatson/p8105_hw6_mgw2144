@@ -177,13 +177,48 @@ estimate_plot_log
 
 ![](hw6_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
-The distribution of the log(beta 1 \* beta 2) estimates is strongly left
+The distribution of the log(beta_1\*beta_2) estimates is strongly left
 skewed. This may be due to the fact that there were several negative
 beta estimates that could not be used in the log calculations,
 indicating that this may not be representative of the dataset the
 bootstrap was performed on.
 
-Using the 5000 bootstrap estimates, identify the 2.5% and 97.5%
-quantiles to provide a 95% confidence interval for r̂ 2 and log(β̂ 0∗β̂ 1)
+## Identifying 95% Confidence Intervals
+
+``` r
+bootstrap_results %>%  
+  group_by(term) %>% 
+  summarize(
+    ci_lower = quantile(r_squared, 0.025), 
+    ci_upper = quantile(r_squared, 0.975))
+```
+
+    ## # A tibble: 3 × 3
+    ##   term        ci_lower ci_upper
+    ##   <chr>          <dbl>    <dbl>
+    ## 1 (Intercept)    0.889    0.941
+    ## 2 prcp           0.889    0.941
+    ## 3 tmin           0.889    0.941
+
+We are 95% confident that the true r-squared value is between 0.889 and
+0.941.
+
+``` r
+bootstrap_results %>%  
+  group_by(term) %>% 
+  summarize(
+    ci_lower = quantile(log_beta, 0.025, na.rm = TRUE), 
+    ci_upper = quantile(log_beta, 0.975, na.rm = TRUE))
+```
+
+    ## # A tibble: 3 × 3
+    ##   term        ci_lower ci_upper
+    ##   <chr>          <dbl>    <dbl>
+    ## 1 (Intercept)    -8.98    -4.60
+    ## 2 prcp           -8.98    -4.60
+    ## 3 tmin           -8.98    -4.60
+
+We are 95% confident that the true log(beta_1\*beta_2) value is between
+-8.98 and -4.60.
 
 # Problem 3
