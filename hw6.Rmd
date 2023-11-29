@@ -1,0 +1,14 @@
+---
+title: "hw6"
+output: github_document
+date: "2023-11-29"
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(p8105.datasets)
+library(modelr)
+library(mgcv)
+
+set.seed(1)
+```
