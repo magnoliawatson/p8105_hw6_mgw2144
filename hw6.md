@@ -222,3 +222,33 @@ We are 95% confident that the true log(beta_1\*beta_2) value is between
 -8.98 and -4.60.
 
 # Problem 3
+
+## tidying the data
+
+``` r
+birthweight_df = 
+  read_csv("data/birthweight.csv") %>% 
+  janitor::clean_names() %>% 
+  mutate(across(c(babysex, frace, malform, mrace), as_factor))
+```
+
+    ## Rows: 4342 Columns: 20
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## dbl (20): babysex, bhead, blength, bwt, delwt, fincome, frace, gaweeks, malf...
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+``` r
+missing_val_check = 
+  birthweight_df %>% 
+  summarise_all(~sum(is.na(.)))
+```
+
+Propose a regression model for birthweight. This model may be based on a
+hypothesized structure for the factors that underly birthweight, on a
+data-driven model-building process, or a combination of the two.
+Describe your modeling process and show a plot of model residuals
+against fitted values – use add_predictions and add_residuals in making
+this plot.
