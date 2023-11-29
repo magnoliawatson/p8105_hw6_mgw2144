@@ -2,6 +2,41 @@ hw6
 ================
 2023-11-29
 
+``` r
+library(tidyverse)
+```
+
+    ## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+    ## ✔ dplyr     1.1.4     ✔ readr     2.1.4
+    ## ✔ forcats   1.0.0     ✔ stringr   1.5.1
+    ## ✔ ggplot2   3.4.4     ✔ tibble    3.2.1
+    ## ✔ lubridate 1.9.3     ✔ tidyr     1.3.0
+    ## ✔ purrr     1.0.2     
+    ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+    ## ✖ dplyr::filter() masks stats::filter()
+    ## ✖ dplyr::lag()    masks stats::lag()
+    ## ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
+
+``` r
+library(p8105.datasets)
+library(modelr)
+library(mgcv)
+```
+
+    ## Loading required package: nlme
+    ## 
+    ## Attaching package: 'nlme'
+    ## 
+    ## The following object is masked from 'package:dplyr':
+    ## 
+    ##     collapse
+    ## 
+    ## This is mgcv 1.9-0. For overview type 'help("mgcv-package")'.
+
+``` r
+set.seed(1)
+```
+
 # Problem 1
 
 # Problem 2
@@ -124,7 +159,11 @@ bootstrap_results %>%
 estimate_plot_rs
 ```
 
-![](hw6_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+![](hw6_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+
+The distribution of the r sqaured estimates appears approximately normal
+but may have a slight left skew. This slight skew is likely due to
+random sampling variability.
 
 ``` r
 estimate_plot_log = 
@@ -136,11 +175,13 @@ estimate_plot_log
 
     ## Warning: Removed 10083 rows containing non-finite values (`stat_density()`).
 
-![](hw6_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+![](hw6_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
-Use 5000 bootstrap samples and, for each bootstrap sample, produce
-estimates of these two quantities. Plot the distribution of your
-estimates, and describe these in words.
+The distribution of the log(beta 1 \* beta 2) estimates is strongly left
+skewed. This may be due to the fact that there were several negative
+beta estimates that could not be used in the log calculations,
+indicating that this may not be representative of the dataset the
+bootstrap was performed on.
 
 Using the 5000 bootstrap estimates, identify the 2.5% and 97.5%
 quantiles to provide a 95% confidence interval for r̂ 2 and log(β̂ 0∗β̂ 1)

@@ -4,7 +4,7 @@ output: github_document
 date: "2023-11-29"
 ---
 
-```{r setup, include=FALSE}
+```{r}
 library(tidyverse)
 library(p8105.datasets)
 library(modelr)
@@ -78,6 +78,8 @@ bootstrap_results %>%
 estimate_plot_rs
 ```
 
+The distribution of the r sqaured estimates appears approximately normal but may have a slight left skew. This slight skew is likely due to random sampling variability. 
+
 ```{r}
 estimate_plot_log = 
 bootstrap_results %>% 
@@ -86,12 +88,10 @@ bootstrap_results %>%
 estimate_plot_log
 ```
 
-Use 5000 bootstrap samples and, for each bootstrap sample, produce estimates of these two quantities. Plot the distribution of your estimates, and describe these in words.
-
+The distribution of the log(beta 1 * beta 2) estimates is strongly left skewed. This may be due to the fact that there were several negative beta estimates that could not be used in the log calculations, indicating that this may not be representative of the dataset the bootstrap was performed on. 
 
 Using the 5000 bootstrap estimates, identify the 2.5% and 97.5% quantiles to provide a 95% confidence interval for r̂ 2
  and log(β̂ 0∗β̂ 1)
-
 
 
 # Problem 3 
