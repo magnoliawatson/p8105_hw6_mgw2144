@@ -126,60 +126,30 @@ missing_val_check =
 ```
 
 ## Regression model
+
 ```{r}
-fit = 
-  lm(bwt ~ babysex + bhead + blength + delwt + fincome + frace + gaweeks + malform + menarche + mheight + momage + mrace + parity + ppbmi + ppwt + smoken + wtgain, data = birthweight_df)
+all_fit = lm(bwt~ ., data = birthweight_df)
 
-summary(fit)
-
-fit_2 = 
-  lm(bwt ~ babysex + bhead + blength + delwt + fincome + frace + gaweeks + menarche + mheight + momage + mrace + parity + ppbmi + ppwt + smoken + wtgain, data = birthweight_df)
-
-summary(fit_2)
-
-fit_3 = 
-  lm(bwt ~ babysex + bhead + blength + delwt + fincome + gaweeks + menarche + mheight + momage + mrace + parity + ppbmi + ppwt + smoken + wtgain, data = birthweight_df)
-
-summary(fit_3)
-
-fit_4 = 
-  lm(bwt ~ babysex + bhead + blength + delwt + fincome + gaweeks + menarche + mheight + momage + mrace + parity + ppwt + smoken + wtgain, data = birthweight_df)
-
-summary(fit_4)
-
-fit_5 = 
-  lm(bwt ~ babysex + bhead + blength + delwt + fincome + gaweeks + menarche + mheight + mrace + parity + ppwt + smoken + wtgain, data = birthweight_df)
-
-summary(fit_5)
-
-fit_6 = 
-  lm(bwt ~ babysex + bhead + blength + delwt + fincome + gaweeks + mheight + mrace + parity + ppwt + smoken + wtgain, data = birthweight_df)
-
-summary(fit_6)
-
-fit_7 = 
-  lm(bwt ~ babysex + bhead + blength + delwt + gaweeks + mheight + mrace + parity + ppwt + smoken + wtgain, data = birthweight_df)
-
-summary(fit_7)
-
-fit_8 = 
-  lm(bwt ~ babysex + bhead + blength + delwt + gaweeks + mheight + mrace + ppwt + smoken + wtgain, data = birthweight_df)
-
-summary(fit_8)
-
-fit_8 %>%  
-  broom::glance()
+step(all_fit, direction = "both")
 ```
 
-Final model: lm(bwt ~ babysex + bhead + blength + delwt + gaweeks + mheight + mrace + ppwt + smoken + wtgain, data = birthweight_df)
+```{r}
+fit = lm(bwt ~ babysex + bhead + blength + delwt + fincome + 
+    gaweeks + mheight + mrace + parity + ppwt + smoken, data = birthweight_df)
+```
 
-In the model fitting process I began by constructing a multivariable linear regression model. From there I utilized the p-value method approach and re-fit the model a total of seven times until each varaible was significant in the model. With each new model that was fit, the least significant predictor was removed and the model was re-tested for significance. 
+Final model: lm( bwt ~ babysex + bhead + blength + delwt + fincome + gaweeks + mheight + mrace + parity + ppwt + smoken, data = birthweight_df)
+
+I chose to use a stepwise compariosn of the model for the building process to determine the final linear regression model. The final model contains eleven predictors with the outcome variable birthweight. 
+
+```{r}
+birthweight_df %>% 
+  modelr::add_residuals(fit) %>% 
+  modelr::add_predictions(fit) %>% 
+  ggplot(aes(x = fitted.values(fit), y = residuals(fit))) + geom_point()
+```
+
+## Cross Validation 
 
 rmse values 
-start with full model 
-no need to look for interaction
-
-Propose a regression model for birthweight. This model may be based on a hypothesized structure for the factors that underly birthweight, on a data-driven model-building process, or a combination of the two. 
-
-Describe your modeling process and show a plot of model residuals against fitted values – use add_predictions and add_residuals in making this plot.
 
