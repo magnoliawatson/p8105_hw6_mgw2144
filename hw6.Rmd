@@ -162,7 +162,12 @@ fit_7 =
 
 summary(fit_7)
 
-fit_7 %>%  
+fit_8 = 
+  lm(bwt ~ babysex + bhead + blength + delwt + gaweeks + mheight + mrace + ppwt + smoken + wtgain, data = birthweight_df)
+
+summary(fit_8)
+
+fit_8 %>%  
   broom::glance()
 ```
 
@@ -170,4 +175,7 @@ rmse values
 start with full model 
 no need to look for interaction
 
-Propose a regression model for birthweight. This model may be based on a hypothesized structure for the factors that underly birthweight, on a data-driven model-building process, or a combination of the two. Describe your modeling process and show a plot of model residuals against fitted values – use add_predictions and add_residuals in making this plot.
+Propose a regression model for birthweight. This model may be based on a hypothesized structure for the factors that underly birthweight, on a data-driven model-building process, or a combination of the two. 
+
+Describe your modeling process and show a plot of model residuals against fitted values – use add_predictions and add_residuals in making this plot.
+
