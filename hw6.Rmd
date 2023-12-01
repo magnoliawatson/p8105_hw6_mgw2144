@@ -1,5 +1,5 @@
 ---
-title: "hw6"
+title: "p8105_hw6_mgw2144"
 output: github_document
 date: "2023-11-29"
 ---
