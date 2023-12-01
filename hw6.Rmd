@@ -171,6 +171,10 @@ fit_8 %>%
   broom::glance()
 ```
 
+Final model: lm(bwt ~ babysex + bhead + blength + delwt + gaweeks + mheight + mrace + ppwt + smoken + wtgain, data = birthweight_df)
+
+In the model fitting process I began by constructing a multivariable linear regression model. From there I utilized the p-value method approach and re-fit the model a total of seven times until each varaible was significant in the model. With each new model that was fit, the least significant predictor was removed and the model was re-tested for significance. 
+
 rmse values 
 start with full model 
 no need to look for interaction
